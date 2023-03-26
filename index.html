@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    
+
+    <div class="wrapper">
+        <div class="wrap-chart">
+            <canvas id="myChart"></canvas>
+        </div>
+       
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChart');
+        const data = {
+            labels: ['BTC', 'USDT', 'Ethernium'],
+            datasets: [
+                {
+                    label: '24 march',
+                    data: [1, 2, 3],
+                    borderColor: '#aa00ff',
+                    backgroundColor: '#aa00ff',
+                },
+                {
+                    label: '25 march',
+                    data: [2, 3, 5],
+                    borderColor: '#f50057',
+                    backgroundColor: '#D60E3D',
+                },
+                {
+                    label: '26 march',
+                    data: [2, 3, 6],
+                    borderColor: 'black',
+                    backgroundColor: 'black',
+                },
+            ]
+        };
+        const plugin = {
+            id: 'bgColorArea',
+            beforeDraw(chart, args, options) {
+                const { ctx, chartArea: { left, top, width, bottom }, scales: { x, y } } = chart;
+                const endTop = y.getPixelForValue(35);
+                const endMid = y.getPixelForValue(10);
+                ctx.save();
+                ctx.fillStyle = 'white';
+                ctx.fillRect(left, top, width, endTop - top);
+                ctx.fillStyle = 'white';
+                ctx.fillRect(left, endTop, width, endMid - endTop);
+                ctx.fillStyle = 'white';
+                ctx.fillRect(left, endMid, width, bottom - endMid);
+                ctx.restore();
+            }
+        };
+        // const data = {
+        //     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        //     datasets: [{
+        //         label: '# of Votes',
+        //         data: [12, 19, 3, 5, 2, 3],
+        //         borderWidth: 1,
+        //         // backgroundColor: '#f50057',
+
+        //     }]
+        // };
+
+        new Chart(ctx, {
+            type: 'bar', // bar, line, doughnut, pie
+            data: data,
+            plugins: [plugin],
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>
